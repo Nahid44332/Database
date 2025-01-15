@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List with CRUD</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .actions button {
+      margin-left: 10px;
+      background-color: #007bff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    .actions button.delete {
+      background-color: #dc3545;
+    }
+    .actions button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User List with CRUD</h1>
+    <form id="userForm">
+      <input type="text" id="userName" placeholder="Enter user name" required>
+      <button type="submit">Add User</button>
+    </form>
+    <ul id="userList"></ul>
+  </div>
+
+  <script>
+    const userForm = document.getElementById('userForm');
+    const userNameInput = document.getElementById('userName');
+    const userList = document.getElementById('userList');
+
+    let users = []; // To store user data
+
+    // Add user
+    userForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const userName = userNameInput.value.trim();
+      if (userName) {
+        users.push(userName);
+        renderUserList();
+        userNameInput.value = '';
+      }
+    });
+
+    // Render user list
+    function renderUserList() {
+      userList.innerHTML = '';
+      users.forEach((user, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${user}</span>
+          <div class="actions">
+            <button class="edit" onclick="editUser(${index})">Edit</button>
+            <button class="delete" onclick="deleteUser(${index})">Delete</button>
+          </div>
+        `;
+        userList.appendChild(li);
+      });
+    }
+
+    // Edit user
+    function editUser(index) {
+      const newName = prompt('Enter new name:', users[index]);
+      if (newName) {
+        users[index] = newName.trim();
+        renderUserList();
+      }
+    }
+
+    // Delete user
+    function deleteUser(index) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        users.splice(index, 1);
+        renderUserList();
+      }
+    }
+  </script>
+</body>
+</html>
